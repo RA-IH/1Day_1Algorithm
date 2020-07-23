@@ -1,0 +1,23 @@
+class Solution {
+    
+    static long[] tiles = new long[81];
+   
+    public long solution(int N) {
+        long answer = 0;
+        
+        if(N == 1) return 4;
+        
+        tiles[0] = 1;
+        tiles[1] = 1;
+        
+        for(int i=2; i<N; i++){    
+            tiles[i] = tiles[i-1] + tiles[i-2];
+        }
+        
+        answer = tiles[N-1]*4 + tiles[N-2]*2;
+        
+        return answer;
+    }
+}
+
+// 효율성 문제: long-int 타입 캐스팅 주의!
