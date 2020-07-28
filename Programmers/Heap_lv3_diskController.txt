@@ -1,0 +1,82 @@
+import java.util.*;
+
+class Solution {
+    public int solution(int[][] jobs) {
+        int answer = 0;
+        int len = jobs.length;
+        
+        // 배열 정렬
+        Arrays.sort(jobs, new Comparator<int[]> (){
+           @Override
+            public int compare(int[] o1, int[] o2) {
+                if(o1[0] == o2[0]) return o1[1]-o2[1];
+                return o1[0]-o2[0];
+            }
+        });
+        
+        PriorityQueue<int[]> waiting = new PriorityQueue<int[]>(new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return o1[1] - o2[1];
+            }
+        });
+
+        
+        int requested_time = 0; // 요청 시간
+        int required_time = 0; // 소요 시간
+        int time = 0;
+        int cnt = 0;
+        
+        while(cnt < len || !waiting.isEmpty()){
+            requested_time = jobs[cnt][0];
+            required_time = jobs[cnt][1];
+            if(time>requested_time) {
+                answer += time-requested_time+required_time;
+                time += required_time;
+            } else{
+                answer += required_time;
+                time = requested_time + required_time;
+            }
+            cnt++;
+            
+            while(cnt < len && time > jobs[cnt][0]) {
+                waiting.add(jobs[cnt++]);
+            }
+
+            
+            while(!waiting.isEmpty()){
+                System.out.print(requested_time + " ");
+                requested_time = waiting.peek()[0];
+            	required_time = waiting.peek()[1];
+            	waiting.poll();
+            	answer += time-requested_time+required_time;
+            	time += required_time;
+                while(cnt < len && time > jobs[cnt][0]){
+                    waiting.add(jobs[cnt++]);
+                }
+            }
+            
+        }
+        
+        return answer/len;
+    }
+}
+
+
+/*
+
+- 다시 풀이 필수!
+
+[개선할 점]
+
+- 요청 정보를 담은 request 클래스 작성
+
+[주의점]
+
+1) 배열 jobs는 정렬되어 있지 않다
+-> 따라서 작업 요청시점 오름차순, 작업 요청시점이 같다면 작업 소요시간에 따라 오름차순 정렬
+2) 한 작업을 끝낼 때 마다 대기중인 요청의 우선순위를 갱신해야 한다
+-> PriorityQueue, Comparator, while문을 활용
+
+
+*/
