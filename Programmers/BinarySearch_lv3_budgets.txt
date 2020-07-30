@@ -1,0 +1,70 @@
+import java.util.*;
+
+class Solution {
+
+    public int solution(int[] budgets, int M) {
+        int answer = 0;
+        long sum = 0;
+        int len = budgets.length;
+        
+        Arrays.sort(budgets);
+        
+        for(int i=0; i<len; i++){
+            sum+=budgets[i];
+        }
+        
+        if(sum <= M) return budgets[len-1];
+        
+        int left = 0;
+        int right = len-1;
+        int mid=(left+right)/2;
+        
+        while(right > left) {
+            sum = 0;
+            mid = (left+right)/2;
+            for(int i=0; i<mid; i++){
+                sum += budgets[i];
+            }
+            for(int i=mid; i<len; i++){
+                sum += budgets[mid];
+            }
+            
+            if(sum == M) {
+                return budgets[mid];
+            }
+            
+            if(sum > M) {
+                right = mid;
+            } else {
+                left = mid+1;
+            }
+        }
+        
+        int idx = right-1;
+        
+        if(idx < 0) {
+            answer = M/len;
+        } else {
+            int beforeSum = 0;
+            for(int i=0; i<=idx; i++){
+                beforeSum += budgets[i];
+            }
+            int mod = M - beforeSum;
+
+            answer = mod/(len-right);
+        }
+        
+        
+        return answer;
+    }
+}
+
+
+
+
+
+/*
+
+- 이분탐색 인덱스 기준이 아닌 값을 기준으로 했을 때 구현하기 더 쉽다
+
+*/
