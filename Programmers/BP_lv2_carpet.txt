@@ -1,0 +1,26 @@
+class Solution {
+    public int[] solution(int brown, int yellow) {
+        int[] answer = {};
+
+        int sum = brown + yellow;
+        
+        int wid = 0;
+        int height = 1;
+        
+        for(int i=height; i<=(yellow/2)+1; i++){
+            if(yellow%i == 0) {
+                wid = yellow/i;
+                if((wid+2)*(i+2) == sum) {
+                    if(wid>i) {
+                        answer = new int[] {wid+2, i+2};
+                    } else {
+                        answer = new int[] {i+2, wid+2};
+                    }
+                    break;
+                }
+            }
+        }
+           
+        return answer;
+    }
+}
