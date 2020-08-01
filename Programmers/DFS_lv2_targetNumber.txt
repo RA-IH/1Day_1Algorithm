@@ -1,0 +1,40 @@
+class Solution1 {
+    
+    static int answer = 0;
+    public void calcDfs(int[] numbers, int target, int idx, int sum) {
+        if(idx == numbers.length) {
+            if(target == sum) answer++;
+            return;
+        }
+        calcDfs(numbers, target, idx+1, sum+numbers[idx]);
+        calcDfs(numbers, target, idx+1, sum-numbers[idx]);
+    }
+    
+    public int solution(int[] numbers, int target) {
+        
+        calcDfs(numbers, target, 0, 0); 
+        
+        return answer;
+    }
+}
+
+// static을 사용하지 않는 방법
+
+class Solution2 {
+    
+    public int calcDfs(int[] numbers, int target, int idx, int sum) {
+        if(idx == numbers.length) {
+            if(target == sum) return 1;
+	    else return 0;
+        }
+        return calcDfs(numbers, target, idx+1, sum+numbers[idx]) + calcDfs(numbers, target, idx+1, sum-numbers[idx]);
+    }
+    
+    public int solution(int[] numbers, int target) {       
+	int answer = 0;
+        answer = calcDfs(numbers, target, 0, 0);        
+        return answer;
+    }
+}
+
+
