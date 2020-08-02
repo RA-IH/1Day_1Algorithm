@@ -1,0 +1,24 @@
+import java.util.*;
+
+class Solution {
+    public int solution(int[] citations) {
+        int answer = 0;
+        int n = citations.length;
+        
+        Arrays.sort(citations);
+        
+        int max = citations[n-1] > n ? n : citations[n-1];
+        int idx = 0;
+
+        while(idx < n && answer < n-idx) {
+            int h2 = n-idx;
+            int h3 = idx;
+            
+            if(citations[idx] > answer) answer++;
+            else idx++;
+                       
+        }
+
+        return answer;
+    }
+}
