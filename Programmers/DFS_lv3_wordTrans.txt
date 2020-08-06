@@ -1,0 +1,45 @@
+import java.util.*;
+
+class Solution {
+    
+    static int[] v = new int[51];
+    static int min = 51;
+    
+    public int difCheck(String str1, String str2) {
+        int cnt = 0;
+        for(int i=0; i<str1.length(); i++) {
+            if(str1.charAt(i) != str2.charAt(i)) cnt++;
+        }
+        return cnt;
+    }
+    
+    public void wordMove(String word, String target, String[] words, int idx) {
+        int len = words.length;
+        if(len <= idx) return;
+
+        for(int i=0; i<len; i++) {
+            if(word.equals(target)) {
+                min = Math.min(min, idx);
+                return;
+            }
+            int dif = difCheck(word, words[i]);
+            if(v[i] == 0 && dif == 1) {
+                v[i] = 1;
+                wordMove(words[i], target, words, idx+1);
+                v[i] = 0;
+            }
+        }
+    }
+    
+    public int solution(String begin, String target, String[] words) {
+        int answer = 0;
+        
+        if(!Arrays.asList(words).contains(target)) return 0;
+        
+        wordMove(begin,target,words,0);
+        
+        answer = min;
+        
+        return answer;
+    }
+}
