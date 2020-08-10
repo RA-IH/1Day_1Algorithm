@@ -1,0 +1,62 @@
+import java.util.*;
+
+class Solution {
+    
+    public int getParent(int[] check, int x) {
+        if(check[x] == x) return x;
+        return check[x] = getParent(check, check[x]);
+    }
+    
+    public void union(int[] check, int a, int b) {
+        a = getParent(check, a);
+        b = getParent(check, b);
+        
+        if(a < b) check[b] = a;
+        else check[a] = b;
+    }
+    
+    public boolean findUnion(int check[], int a, int b){
+        int a_parent = getParent(check, a);
+        int b_parent = getParent(check, b);
+        
+        if(a_parent == b_parent) return true;
+        return false;
+    }
+    
+    public int solution(int n, int[][] costs) {
+        int answer = 0;
+        
+        int[] check = new int[n];
+        int edge = n-1;
+        
+        for(int i=0; i<n; i++) {
+            check[i] = i;
+        }
+        
+        Arrays.sort(costs, new Comparator<int[]>() {
+           @Override
+            public int compare(int[] i1, int[] i2) {
+                return i1[2] - i2[2];
+            }
+        });
+
+        for(int i=0; i<costs.length; i++){
+            int is1 = costs[i][0];
+            int is2 = costs[i][1];
+            int cost = costs[i][2];
+
+            if(!findUnion(check, is1, is2)) {
+                answer += cost;
+                union(check, is1, is2);
+                edge--;
+            }
+            if(edge == 0) break;
+        }
+        
+        
+        return answer;
+    }
+}
+
+// 크루스칼 알고리즘
+// union-find 활용
