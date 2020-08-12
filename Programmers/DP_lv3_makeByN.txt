@@ -1,0 +1,46 @@
+import java.util.*;
+
+class Solution {
+    public int makeNum(int i, int N) {
+        int num = 0;
+        for(int j=0; j<i; j++)
+            num += Math.pow(10, j) * N;
+        
+        return num;
+    }
+    
+    public int solution(int N, int number) {
+        int answer = -1;
+        
+        HashMap<Integer, ArrayList<Integer>> map = new HashMap<Integer, ArrayList<Integer>>();
+       
+        for(int i=1; i<=8; i++) {
+            map.put(i, new ArrayList<Integer>());
+            map.get(i).add(makeNum(i, N));
+        }
+        
+        if(number == N) return 1;
+        
+        for(int i=2; i<=8; i++) {
+            int behind = 1;
+            for(int front=i-1; front>=behind; front--) {
+                for(int num1 : map.get(front)) {
+                    for(int num2 : map.get(behind)) {
+                        map.get(i).add(num1+num2);
+                        if(num1 != num2) map.get(i).add(num1-num2);
+                        map.get(i).add(num1*num2);
+                        if(num2 != 0) map.get(i).add(num1/num2);
+                    }
+                }
+               behind++;
+            }
+            if(map.get(i).contains(number)) return i;
+        }
+        
+        return answer;
+    }
+}
+
+
+// 필요할 땐 사중포문도 도전해보기
+// ArrayList가 아닌 set으로 값을 담으면 중복값 제거 가능했을것
