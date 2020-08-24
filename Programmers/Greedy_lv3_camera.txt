@@ -1,0 +1,40 @@
+import java.util.*;
+
+class Solution {
+    
+    public void changeRange(int[][] routes, int[] camera, int i) {
+        camera[0] = routes[i][0];
+        camera[1] = routes[i][1];
+    }
+    
+    public int solution(int[][] routes) {
+        int answer = 1;
+        
+        Arrays.sort(routes, new Comparator<int[]>() {
+           @Override
+            public int compare(int[] car1, int[] car2) {
+                return car1[0] - car2[0];
+            }
+        });
+        
+        int[] camera = new int[2];
+        changeRange(routes, camera, 0);
+        
+        for(int i=1; i<routes.length; i++) {
+            if(routes[i][1] <= camera[1]) {
+                changeRange(routes, camera, i);
+            } else {
+                if(camera[1] >= routes[i][0]) camera[0] = routes[i][0];
+                else {
+                    answer++;
+                    changeRange(routes, camera, i);
+                }
+            }
+        }
+        
+        return answer;
+    }
+}
+
+
+// 같은 범위가 입력되는 경우를 고려해야 한다 (ex) [[0, 0], [0, 0], [2, 2]] 2
