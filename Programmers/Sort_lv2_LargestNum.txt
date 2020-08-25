@@ -1,0 +1,38 @@
+import java.util.*;
+
+class Solution {
+    
+    public int getDigit(int num){
+        int digit = 1;
+        if(num == 0) return 0;
+        while(num >= 10) {
+            num /= 10;
+            digit++;
+        }
+        return digit;
+    }
+    
+    public String solution(int[] numbers) {
+        StringBuilder answer = new StringBuilder();
+        
+        ArrayList<String> list = new ArrayList<String>();
+        
+        for(int i : numbers)
+            list.add(Integer.toString(i));
+        
+        Collections.sort(list, new Comparator<String>() {
+           @Override
+            public int compare(String s1, String s2) {
+                return (s2+s1).compareTo(s1+s2);
+            }
+        });
+        
+        if(list.get(0).equals("0")) return "0";
+        
+        for(String s : list) {
+            answer.append(s);
+        }
+        
+        return answer.toString();
+    }
+}
