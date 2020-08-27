@@ -1,0 +1,49 @@
+import java.util.*;
+
+class Solution {
+    
+    public void operation(LinkedList<Integer> desc, String oper) {
+        String command = oper.substring(0, 1);
+        int num = Integer.parseInt(oper.substring(2, oper.length()));
+
+        if(command.equals("I")) {
+            desc.add(num);
+            Collections.sort(desc, new Comparator<Integer>(){
+            @Override
+            public int compare(Integer n1, Integer n2) {
+                return n2 - n1;
+            }
+            });
+        } else {
+            if(num == 1) {
+                if(!desc.isEmpty()) desc.remove(0);
+            }
+            if(num == -1) {
+                if(!desc.isEmpty()) desc.remove(desc.size()-1);
+            }
+        }
+    }
+    
+    public int[] solution(String[] operations) {
+        int[] answer = {};
+        
+        LinkedList<Integer> desc = new LinkedList<Integer>();
+        
+        for(int i=0; i<operations.length; i++) {
+            operation(desc, operations[i]);
+        }
+        
+        int size = desc.size();
+
+        if(size == 0) return new int[] {0, 0};
+        
+        answer = new int[2];
+        answer[0] = desc.get(0);
+        answer[1] = desc.get(size-1);
+        
+        return answer;
+    }
+}
+
+
+// 값 추가시마다 정렬하지 않고 계산하는 방법은 없을까
